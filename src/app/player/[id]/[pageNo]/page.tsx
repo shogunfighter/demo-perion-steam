@@ -66,8 +66,8 @@ export default async function Page(args: TPageParam) {
                         </tr>
                     </thead>
                     <tbody>
-                        {mapGamesOwnedResult.map(item => (
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        {mapGamesOwnedResult.map((item, index) => (
+                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={index}>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item.id}</th>
                                 <td scope="row" className="px-6 py-4">{item.name}</td>
                                 <td scope="row" className="px-6 py-4">{item.minutes}</td>
@@ -90,7 +90,7 @@ export default async function Page(args: TPageParam) {
                                     (pageNo === index + 1)
                                         ? "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                         : "flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                                }>{index + 1}</Link>
+                                } key={index}>{index + 1}</Link>
                             </li>)
                         }
                         <li>
