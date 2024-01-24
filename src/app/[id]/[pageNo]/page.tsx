@@ -10,8 +10,7 @@ export default async function Page(args: TPageParam) {
 
     const id = args.params.id;
     const pageNo = Number(args.params.pageNo) || 1;
-    console.log("id:", id);
-    console.log("pageNo:", pageNo);
+    console.log("id:", id, "pageNo:", pageNo);
 
     let data;
     try {
