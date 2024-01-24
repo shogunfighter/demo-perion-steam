@@ -15,11 +15,13 @@ export default async function MostPlayedGames({ games } : { games: Array<UserPla
     gameDetailList.push(await SteamClient.getGameDetails(item.game.id));
   }
 
+  console.log("XXXXXXXXXX gameDetailList:",gameDetailList);
+
   return (
     <div>
       {
-        gameDetailList.map(gameDetail => {
-          return <div>
+        gameDetailList.map((gameDetail, id) => {
+          return <div key={id}>
             <Image
               src={gameDetail.capsule_image}
               width={231}

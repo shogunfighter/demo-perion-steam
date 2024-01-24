@@ -15,7 +15,14 @@ export default async function Page(args: TPageParam) {
     console.log("id:", id);
     console.log("pageNo:", pageNo);
 
-    let data = await SteamClient.getUserOwnedGames(id);
+    let data;
+    try {
+        data = await SteamClient.getUserOwnedGames(id);
+    }
+    catch (error) {
+        throw new Error("Steam API request failed.");
+    }
+
     // http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=STEAM_KEY&steamid=76561197960434622&format=json
     // const response = await fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${id[0]}&format=json`);
     // const data = await response.json();
