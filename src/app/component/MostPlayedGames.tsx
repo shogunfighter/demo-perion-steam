@@ -3,8 +3,7 @@ import { Game, GameInfo, GameInfoExtended, UserPlaytime } from "steamapi";
 import SteamClient from "../util/steam";
 
 export default async function MostPlayedGames({ games } : { games: Array<UserPlaytime<Game | GameInfo | GameInfoExtended>>}) {
-
-  console.log("XXXXXXXXXXXXXXXXXXX MostPlayedGames games:",JSON.stringify(games, null, 2))
+  // console.log("XXXXXXXXXXXXXXXXXXX MostPlayedGames games:",JSON.stringify(games, null, 2))
 
 
   const gameDetailList = [];
@@ -15,7 +14,7 @@ export default async function MostPlayedGames({ games } : { games: Array<UserPla
     gameDetailList.push(await SteamClient.getGameDetails(item.game.id));
   }
 
-  console.log("XXXXXXXXXX gameDetailList:",gameDetailList);
+  // console.log("XXXXXXXXXX gameDetailList:",gameDetailList);
 
   return (
     <div>

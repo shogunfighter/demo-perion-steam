@@ -1,8 +1,8 @@
 "use server";
 
-import { Game, GameInfo, GameInfoExtended, UserPlaytime } from "steamapi";
 import SteamClient from "../util/steam";
 import sortBy from "lodash/sortBy";
+import { Game, GameInfo, GameInfoExtended, UserPlaytime } from "steamapi";
 import { redirect } from "next/navigation";
 
 type CachedGameDetails = {
@@ -21,7 +21,7 @@ let cachedGameDetails: CachedGameDetails = {};
 export async function handleQueryPlayerInfo(formData: FormData) {
     'use server';
     const id = formData.get('id');
-    redirect(`/player/${id}/1`); // Navigate to specific player page
+    redirect(`/${id}/1`); // Navigate to specific player page
 }
 
 export const mapGamesOwned = async (data: Array<UserPlaytime<Game | GameInfo | GameInfoExtended>>, page: number = 1): Promise<GamesOwned[]> => {
@@ -45,7 +45,7 @@ export const mapGamesOwned = async (data: Array<UserPlaytime<Game | GameInfo | G
      */
     gameNameDetail: for (const {game, minutes} of pageContent) {
 
-        if (requestCountGameName < 10) {
+        if (requestCountGameName < itemsPerPage) {
             let item: GamesOwned = {
                 id: game.id,
                 name: "",

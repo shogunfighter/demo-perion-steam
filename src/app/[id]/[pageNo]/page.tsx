@@ -1,14 +1,12 @@
-// import MostPlayedGames from "@/app/component/MostPlayedGames";
-import MostPlayedGames from "@/app/component/MostPlayedGames";
-import { handleQueryPlayerInfo, mapGamesOwned, mostPlayedGames, totalNumberOfGamesOwned, totalPlaytimeAcrossAllGames } from "../../../server/actions";
-import SteamClient from "../../../util/steam";
 import Link from "next/link";
-// import fetch from "node-fetch";
+import MostPlayedGames from "@/app/component/MostPlayedGames";
+import SteamClient from "../../util/steam";
+import { handleQueryPlayerInfo, mapGamesOwned, mostPlayedGames, totalNumberOfGamesOwned, totalPlaytimeAcrossAllGames } from "../../server/actions";
 
 type TPageParam = { params: { id: string, pageNo: string } }
 
 export default async function Page(args: TPageParam) {
-    console.log("XXXXXXXXXXXXXXX: ", JSON.stringify(args, null, 2));
+    // console.log("XXXXXXXXXXXXXXX: ", JSON.stringify(args, null, 2));
 
     const id = args.params.id;
     const pageNo = Number(args.params.pageNo) || 1;
@@ -20,7 +18,14 @@ export default async function Page(args: TPageParam) {
         data = await SteamClient.getUserOwnedGames(id);
     }
     catch (error) {
-        throw new Error("Steam API request failed.");
+        return (
+            <>
+                <p>
+                    Steam API request failed.
+                </p>
+            </>
+        );
+        // throw new Error("Steam API request failed.");
     }
 
     // http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=STEAM_KEY&steamid=76561197960434622&format=json
@@ -54,8 +59,7 @@ export default async function Page(args: TPageParam) {
                     <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                 </form>
 
-                <br />
-                <br />
+                <br /><br />
 
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -76,17 +80,16 @@ export default async function Page(args: TPageParam) {
                     </tbody>
                 </table>
 
-                <br />
-                <br />
+                <br /><br />
 
                 <nav aria-label="Page navigation example">
                     {pageCount > 1 && <ul className="inline-flex flex-row flex-wrap justify-center items-start -space-x-px text-sm">
                         <li key={"prev"}>
-                            <Link href={pageNo > 1 ? `/player/${id}/${pageNo - 1}` : "#"} className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 ms-0 border-e-0 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</Link>
+                            <Link href={pageNo > 1 ? `/${id}/${pageNo - 1}` : "#"} className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 ms-0 border-e-0 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</Link>
                         </li>
                         {
                             Array.from({ length: pageCount }).map((_, index) => <li key={index}>
-                                <Link href={`/player/${id}/${index + 1}`} className={
+                                <Link href={`/${id}/${index + 1}`} className={
                                     (pageNo === index + 1)
                                         ? "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                                         : "flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
@@ -94,17 +97,14 @@ export default async function Page(args: TPageParam) {
                             </li>)
                         }
                         <li key={"next"}>
-                            <Link href={pageNo < pageCount ? `/player/${id}/${pageNo + 1}` : "#"} className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</Link>
+                            <Link href={pageNo < pageCount ? `/${id}/${pageNo + 1}` : "#"} className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</Link>
                         </li>
                     </ul>
                     }
                 </nav>
 
-                <br />
-                <br />
+                <br /><br />
 
-                {/* <pre>{ JSON.stringify(mapGamesOwnedResult, null, 2) }</pre> */}
-                <br />
                 <p>
                     Total number of games owned: {totalNumberOfGamesOwnedResult}
                 </p>
@@ -113,7 +113,6 @@ export default async function Page(args: TPageParam) {
                 </p>
                 <br />
                 <p>
-                    {/* Most played games: {JSON.stringify(mostPlayedGamesResult, null, 2)} */}
                     Most played games: {mostPlayedGamesResult && <MostPlayedGames games={mostPlayedGamesResult} />}
                 </p>
             </main>
