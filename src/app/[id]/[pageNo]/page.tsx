@@ -1,6 +1,6 @@
 import Link from "next/link";
 import MostPlayedGames from "@/app/component/MostPlayedGames";
-import SteamClient from "../../util/steam";
+// import SteamClient from "../../util/steam";
 import { handleQueryPlayerInfo, mapGamesOwned, mostPlayedGames, totalNumberOfGamesOwned, totalPlaytimeAcrossAllGames } from "../../server/actions";
 
 type TPageParam = { params: { id: string, pageNo: string } }
@@ -13,8 +13,25 @@ export default async function Page(args: TPageParam) {
     console.log("id:", id, "pageNo:", pageNo);
 
     let data;
+
+    // try {
+    //     data = await SteamClient.getUserOwnedGames(id);
+    // }
+    // catch (error) {
+    //     return (
+    //         <>
+    //             <p>
+    //                 Steam API request failed.
+    //             </p>
+    //         </>
+    //     );
+    //     // throw new Error("Steam API request failed.");
+    // }
+
+    // http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=STEAM_KEY&steamid=76561197960434622&format=json
+    const response = await fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${id[0]}&format=json`);
     try {
-        data = await SteamClient.getUserOwnedGames(id);
+        data = await response.json();
     }
     catch (error) {
         return (
@@ -26,11 +43,7 @@ export default async function Page(args: TPageParam) {
         );
         // throw new Error("Steam API request failed.");
     }
-
-    // http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=STEAM_KEY&steamid=76561197960434622&format=json
-    // const response = await fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${id[0]}&format=json`);
-    // const data = await response.json();
-
+    
     // console.log("data:", data);
 
     const mapGamesOwnedResult = await mapGamesOwned(data, pageNo);
